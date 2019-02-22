@@ -32,16 +32,16 @@ class SolverDFS(UninformedSolver):
                 self.currentState.children.append(state)
                 self.gm.reverseMove(move)
 
-        childToVisit = self.findNextVisitDFS(self.currentState)
-        if childToVisit is None:
+        child_to_visit = self.findNextVisitDFS(self.currentState)
+        if child_to_visit is None:
             return False
-        self.gm.makeMove(childToVisit.requiredMovable)
-        self.visited[childToVisit] = True
+        self.gm.makeMove(child_to_visit.requiredMovable)
+        self.visited[child_to_visit] = True
         new_state = self.gm.getGameState()
         if new_state == self.victoryCondition:
-            self.currentState = childToVisit
+            self.currentState = child_to_visit
             return True
-        self.currentState = childToVisit
+        self.currentState = child_to_visit
 
         return False
 
@@ -97,41 +97,38 @@ class SolverBFS(UninformedSolver):
                     self.bfsqueue.enqueue(state)
                 self.gm.reverseMove(move)
 
+        child_to_visit = self.bfsqueue.dequeue()
+        while child_to_visit in self.visited:
+            child_to_visit = self.bfsqueue.dequeue()
 
-        childToVisit = self.bfsqueue.dequeue()
-        while childToVisit in self.visited:
-            childToVisit = self.bfsqueue.dequeue()
+        self.visited[child_to_visit] = True
 
-        self.visited[childToVisit] = True
-
-        currentDepth = current.depth
-        nextDepth = childToVisit.depth
+        current_depth = current.depth
+        next_depth = child_to_visit.depth
         if current.parent is None:
-            self.gm.makeMove(childToVisit.requiredMovable)
-        elif current.parent == childToVisit.parent:
+            self.gm.makeMove(child_to_visit.requiredMovable)
+        elif current.parent == child_to_visit.parent:
             self.gm.reverseMove(current.requiredMovable)
-            self.gm.makeMove(childToVisit.requiredMovable)
+            self.gm.makeMove(child_to_visit.requiredMovable)
         else:
-            i = 0
-            while i < currentDepth:
+            for i in range(current_depth):
                 self.gm.reverseMove(current.requiredMovable)
                 current = current.parent
-                i += 1
-            i = 0
             moves = []
-            pointerToNext = childToVisit
-            while i < nextDepth:
-                moves.append(pointerToNext.requiredMovable)
-                pointerToNext = pointerToNext.parent
-                i += 1
+            pointer_to_next = child_to_visit
+
+            for i in range(next_depth):
+                moves.append(pointer_to_next.requiredMovable)
+                pointer_to_next = pointer_to_next.parent
+
             while moves:
                 self.gm.makeMove(moves.pop())
 
         new_state = self.gm.getGameState()
         if new_state == self.victoryCondition:
-            self.currentState = childToVisit
+            self.currentState = child_to_visit
             return True
-        self.currentState = childToVisit
+        self.currentState = child_to_visit
 
         return False
 

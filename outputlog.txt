@@ -1,0 +1,23 @@
+TESTS WITH ERRORS 
+-------------------------------
+TESTS FAILED  
+test08_GM_8Puzzle_04 (gradingtests.UnitTests)
+Traceback (most recent call last):
+  File "C:\Users\kille\academics\automatedgradingapp\app\testing\uninformed-solvers\gradingtests.py", line 200, in test08_GM_8Puzzle_04
+    self.assertEqual(p8.getGameState(), ((1,-1,3,),(8,2,4),(7,6,5)))
+AssertionError: Tuples differ: ((1, 2, 3), (8, -1, 4), (7, 6, 5)) != ((1, -1, 3), (8, 2, 4), (7, 6, 5))
+
+First differing element 0:
+(1, 2, 3)
+(1, -1, 3)
+
+- ((1, 2, 3), (8, -1, 4), (7, 6, 5))
+?      ^          ^^
+
++ ((1, -1, 3), (8, 2, 4), (7, 6, 5))
+?      ^^          ^
+
+
+-------------------------------
+TESTS SKIPPED 
+-------------------------------
